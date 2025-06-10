@@ -15,4 +15,3 @@ A simple Solidity smart contract that allows users **to rent virtual plants** fo
 
 ## ⚙️ Prerequisites
 - Solidity `^0.8.0`
-
