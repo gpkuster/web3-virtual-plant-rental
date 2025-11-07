@@ -3,9 +3,16 @@
 pragma solidity 0.8.29;
 
 contract PlantRentalContract {
-
-    enum Status {Available, Rented, Expired}
-    enum Type {Cactus, Bamboo, Monstera}
+    enum Status {
+        Available,
+        Rented,
+        Expired
+    }
+    enum Type {
+        Cactus,
+        Bamboo,
+        Monstera
+    }
 
     struct Plant {
         Status status;
@@ -38,9 +45,9 @@ contract PlantRentalContract {
         _;
     }
 
-    event Rented (Type plantType, uint256 indexed plantId, address indexed tenant);
+    event Rented(Type plantType, uint256 indexed plantId, address indexed tenant);
 
-    function addPlant (Type plantType, uint256 dailyFee) public onlyLessor() {
+    function addPlant(Type plantType, uint256 dailyFee) public onlyLessor {
         Plant memory newPlant = Plant({
             status: Status.Available,
             plantType: plantType,
@@ -51,13 +58,14 @@ contract PlantRentalContract {
         availablePlants.push(newPlant);
     }
 
-    function rentPlant(Type plantType, uint8 daysToRent) 
-        public 
+    function rentPlant(Type plantType, uint8 daysToRent)
+        public
         checkAvailability(plantType)
-        withInMaxDays(daysToRent){
+        withInMaxDays(daysToRent)
+    {
         uint256 id = _findPlant(plantType);
         address tenant = msg.sender;
-        Plant storage plantToRent  = availablePlants[id];
+        Plant storage plantToRent = availablePlants[id];
         plantToRent.tenant = tenant;
         plantToRent.status = Status.Rented;
         plantToRent.endOfContract = block.timestamp + (daysToRent * 1 days);
@@ -78,22 +86,16 @@ contract PlantRentalContract {
 
     function _findPlant(Type plantType) internal view checkAvailability(plantType) returns (uint256) {
         for (uint256 i = 0; i < availablePlants.length; i++) {
-            if (
-                availablePlants[i].plantType == plantType && 
-                availablePlants[i].status == Status.Available
-            ) {
+            if (availablePlants[i].plantType == plantType && availablePlants[i].status == Status.Available) {
                 return i;
             }
         }
         revert("No available plant of the requested type");
     }
 
-    function _isAvailable (Type plantType) internal view returns(bool) {
-        for (uint256 i  = 0; i < availablePlants.length; i++) {
-            if (
-                availablePlants[i].plantType == plantType && 
-                availablePlants[i].status == Status.Available
-            ) {
+    function _isAvailable(Type plantType) internal view returns (bool) {
+        for (uint256 i = 0; i < availablePlants.length; i++) {
+            if (availablePlants[i].plantType == plantType && availablePlants[i].status == Status.Available) {
                 return true;
             }
         }
