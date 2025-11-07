@@ -1,5 +1,5 @@
 # 🌿 PlantRentalContract
-A simple Solidity smart contract that allows users **to rent virtual plants** for a limited time, with daily fees and automatic expiring control.
+Hello world! Here's my first simple Solidity smart contract that allows users **to rent virtual plants** for a limited time, with daily fees and automatic expiring control.
 
 ---
 
